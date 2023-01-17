@@ -18,6 +18,8 @@ packer.startup(function(use)
   use 'nvim-tree/nvim-web-devicons' -- icons
   use 'nvim-lua/plenary.nvim'
   use 'lewis6991/gitsigns.nvim'
+  use 'kdheepak/lazygit.nvim'
+
   use 'nvim-lualine/lualine.nvim' -- Statusline
   use {
     'akinsho/bufferline.nvim',

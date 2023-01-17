@@ -10,8 +10,11 @@ keymap.set('n', '<C-t>', ':tabedit<Return>')
 keymap.set('n', 'sh', ':split<Return><C-w>w')
 keymap.set('n', 'sv', ':vsplit<Return><C-w>w')
 
--- toggle explorer
+-- toggle explore
 keymap.set('n', '<A-e>', ':NvimTreeToggle<Return>')
 
 -- markdown
 keymap.set('n', '<C-m>', ':MarkdownPreview<Return>')
+
+-- fix spelling
+keymap.set('n', '<leader>f', '1z=')
