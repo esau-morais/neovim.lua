@@ -1,6 +1,7 @@
 local status, cmp = pcall(require, 'cmp')
 if (not status) then return end
 local lspkind = require('lspkind')
+local luasnip = require('luasnip')
 
 require('luasnip/loaders/from_vscode').load()
 
@@ -29,9 +30,22 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-d>'] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(1) then
+        luasnip.jump(1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ['<C-b>'] = cmp.mapping(function(fallback)
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
     ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-c>'] = cmp.mapping.abort(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
@@ -39,9 +53,13 @@ cmp.setup({
     }),
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
+    { name = 'nvim_lsp',
+      entry_filter = function(entry)
+        return require('cmp.types').lsp.CompletionItemKind[entry:get_kind()] ~= 'Text'
+      end
+    },
     { name = 'path' },
-    { name = 'buffer', keyword_length = 5 },
+    { name = 'buffer' },
     { name = 'luasnip' },
   }),
   formatting = {

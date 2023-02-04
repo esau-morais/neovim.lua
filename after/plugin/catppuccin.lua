@@ -27,11 +27,12 @@ theme.setup({
     nvimtree = {
       enabled = true,
     },
-    bufferline = true,
     treesitter = true
   },
-  transparent_background = true,
+  transparent_background = false,
   styles = {
     comments = { 'italic' },
   }
 })
+
+vim.cmd.colorscheme 'catppuccin'

@@ -4,11 +4,19 @@ if (not status) then
   return
 end
 
+vim.cmd [[packadd packer.nvim]]
+
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua PackerSync
+  augroup end
+]])
+
 packer.startup(function(use)
-  use 'wbthomason/packer.nvim' -- useins manager
+  use 'wbthomason/packer.nvim' -- plugins manager
 
   use { 'catppuccin/nvim', as = 'catppuccin' }
-  use 'mrshmllow/document-color.nvim'
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -26,6 +34,7 @@ packer.startup(function(use)
     requires = 'nvim-tree/nvim-web-devicons'
   }
 
+  use 'folke/todo-comments.nvim'
   use 'numToStr/Comment.nvim'
   use 'windwp/nvim-autopairs'
   use 'windwp/nvim-ts-autotag'
@@ -52,6 +61,7 @@ packer.startup(function(use)
   use 'neovim/nvim-lspconfig'
   use 'williamboman/mason.nvim'
   use 'williamboman/mason-lspconfig.nvim'
+  use 'jose-elias-alvarez/null-ls.nvim'
 
   -- auto completion
   use 'rafamadriz/friendly-snippets'
@@ -70,20 +80,4 @@ packer.startup(function(use)
   use 'folke/zen-mode.nvim'
   use 'pantharshit00/vim-prisma'
   use 'ThePrimeagen/vim-be-good'
-  use 'mfussenegger/nvim-dap'
-
-  -- automatically sync packages
-  if packer_bootstrap then
-    packer.sync()
-  end
 end)
-
-vim.api.nvim_exec(
-  [[
-  augroup packer_ide_config
-  autocmd!
-  autocmd BufWritePost useins.lua source <afile> | PackerSync
-  augroup end
-]] ,
-  false
-)

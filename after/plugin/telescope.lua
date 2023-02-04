@@ -19,6 +19,7 @@ end
 
 telescope.setup {
   defaults = {
+    path_display = { 'smart' },
     prompt_prefix = ' ▲  ',
     selection_caret = '  ',
     entry_prefix = '  ',
@@ -29,40 +30,39 @@ telescope.setup {
     layout_config = {
       horizontal = {
         prompt_position = 'top',
-        preview_width = 0.55,
-        results_width = 0.8,
+        preview_width = 0.6,
+        preview_cutoff = 100,
       },
       vertical = {
         mirror = false,
       },
       width = 0.87,
       height = 0.80,
-      preview_cutoff = 120,
     },
     winblend = 0,
     border = {},
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
     color_devicons = true,
+    mappings = {
+      -- your custom insert mode mappings
+      ['i'] = {
+        ['<C-w>'] = function() vim.cmd('normal vbd') end,
+      },
+      ['n'] = {
+        -- your custom normal mode mappings
+        ['N'] = fb_actions.create,
+        ['h'] = fb_actions.goto_parent_dir,
+        ['/'] = function()
+          vim.cmd('startinsert')
+        end
+      },
+    },
   },
   extensions = {
     file_browser = {
       theme = 'dropdown',
       -- disables netrw and use telescope-file-browser in its place
       hijack_netrw = true,
-      mappings = {
-        -- your custom insert mode mappings
-        ['i'] = {
-          ['<C-w>'] = function() vim.cmd('normal vbd') end,
-        },
-        ['n'] = {
-          -- your custom normal mode mappings
-          ['N'] = fb_actions.create,
-          ['h'] = fb_actions.goto_parent_dir,
-          ['/'] = function()
-            vim.cmd('startinsert')
-          end
-        },
-      },
     },
   },
 }
@@ -82,7 +82,6 @@ keymap('n', ';e', function()
 end)
 keymap('n', 'sf', function()
   telescope.extensions.file_browser.file_browser({
-    path = '%:p:h',
     cwd = telescope_buffer_dir(),
     respect_gitignore = true,
     hidden = true,
