@@ -38,8 +38,8 @@ cmp.setup({
       end
     end, { "i", "s" }),
     ['<C-b>'] = cmp.mapping(function(fallback)
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
+      if luasnip.jumpable( -1) then
+        luasnip.jump( -1)
       else
         fallback()
       end
@@ -79,5 +79,4 @@ cmp.setup({
 
 vim.cmd [[
   set completeopt=menuone,noinsert,noselect
-  hi! Pmenu guibg=#24273A guifg=#CAD3F5
 ]]

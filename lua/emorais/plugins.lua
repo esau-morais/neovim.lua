@@ -8,8 +8,8 @@ vim.cmd [[packadd packer.nvim]]
 
 vim.cmd([[
   augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua PackerSync
+  autocmd!
+  autocmd BufWritePost plugins.lua PackerSync
   augroup end
 ]])
 
@@ -19,8 +19,8 @@ packer.startup(function(use)
   use { 'catppuccin/nvim', as = 'catppuccin' }
 
   use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+      'nvim-treesitter/nvim-treesitter',
+      run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
   }
   use 'sheerun/vim-polyglot'
   use 'nvim-tree/nvim-web-devicons' -- icons
@@ -30,8 +30,8 @@ packer.startup(function(use)
 
   use 'nvim-lualine/lualine.nvim' -- Statusline
   use {
-    'akinsho/bufferline.nvim',
-    requires = 'nvim-tree/nvim-web-devicons'
+      'akinsho/bufferline.nvim',
+      requires = 'nvim-tree/nvim-web-devicons'
   }
 
   use 'folke/todo-comments.nvim'
@@ -43,25 +43,24 @@ packer.startup(function(use)
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-file-browser.nvim'
   use {
-    'nvim-tree/nvim-tree.lua',
-    requires = {
-      'nvim-tree/nvim-web-devicons'
-    },
-    tag = 'nightly'
+      'nvim-tree/nvim-tree.lua',
+      requires = {
+          'nvim-tree/nvim-web-devicons'
+      },
+      tag = 'nightly'
   }
   use 'akinsho/toggleterm.nvim'
 
   -- lsp
   use {
-    'folke/trouble.nvim',
-    requires = 'kyazdani42/nvim-web-devicons'
+      'folke/trouble.nvim',
+      requires = 'kyazdani42/nvim-web-devicons'
   }
   use 'onsails/lspkind-nvim'
   use 'glepnir/lspsaga.nvim'
   use 'neovim/nvim-lspconfig'
   use 'williamboman/mason.nvim'
   use 'williamboman/mason-lspconfig.nvim'
-  use 'jose-elias-alvarez/null-ls.nvim'
 
   -- auto completion
   use 'rafamadriz/friendly-snippets'
@@ -73,9 +72,10 @@ packer.startup(function(use)
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
 
+  use 'xiyaowong/nvim-transparent'
   use({
-    'iamcco/markdown-preview.nvim',
-    run = function() vim.fn['mkdp#util#install']() end,
+      "iamcco/markdown-preview.nvim",
+      run = function() vim.fn["mkdp#util#install"]() end,
   })
   use 'folke/zen-mode.nvim'
   use 'pantharshit00/vim-prisma'
