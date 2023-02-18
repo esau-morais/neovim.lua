@@ -1,4 +1,4 @@
-local status, styled = pcall(require, 'vim-styled-components')
-if (not status) then return end
+local status, styled = pcall(require, "vim-styled-components")
+if not status then return end
 
-styled.setup({})
+styled.setup {}

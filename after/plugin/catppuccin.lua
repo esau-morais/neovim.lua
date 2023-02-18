@@ -1,8 +1,8 @@
-local status, theme = pcall(require, 'catppuccin')
-if (not status) then return end
+local status, theme = pcall(require, "catppuccin")
+if not status then return end
 
-theme.setup({
-  flavour = 'mocha',
+theme.setup {
+  flavour = "mocha",
   compile = {
     enabled = true,
   },
@@ -11,28 +11,28 @@ theme.setup({
     native_lsp = {
       enabled = true,
       virtual_text = {
-        errors = { 'italic' },
-        hints = { 'italic' },
-        warnings = { 'italic' },
-        information = { 'italic' },
+        errors = { "italic" },
+        hints = { "italic" },
+        warnings = { "italic" },
+        information = { "italic" },
       },
       underlines = {
-        errors = { 'underline' },
-        hints = { 'underline' },
-        warnings = { 'underline' },
-        information = { 'underline' },
+        errors = { "underline" },
+        hints = { "underline" },
+        warnings = { "underline" },
+        information = { "underline" },
       },
     },
     telescope = true,
     nvimtree = {
       enabled = true,
     },
-    treesitter = true
+    treesitter = true,
   },
   transparent_background = false,
   styles = {
-    comments = { 'italic' },
-  }
-})
+    comments = { "italic" },
+  },
+}
 
-vim.cmd.colorscheme 'catppuccin'
+vim.cmd.colorscheme "catppuccin"

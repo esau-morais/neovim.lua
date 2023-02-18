@@ -1,7 +1,7 @@
-vim.cmd('autocmd!')
-vim.scriptencoding = 'utf-8'
-vim.opt.encoding = 'utf-8'
-vim.opt.fileencoding = 'utf-8'
+vim.cmd "autocmd!"
+vim.scriptencoding = "utf-8"
+vim.opt.encoding = "utf-8"
+vim.opt.fileencoding = "utf-8"
 
 vim.opt.title = true
 vim.opt.autoindent = true
@@ -13,25 +13,25 @@ vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
 vim.opt.expandtab = true
 vim.opt.scrolloff = 10
-vim.opt.shell = 'zsh'
-vim.opt.backupskip = { '/tmp/*', '/private/tmp/*' }
-vim.opt.inccommand = 'split'
+vim.opt.shell = "zsh"
+vim.opt.backupskip = { "/tmp/*", "/private/tmp/*" }
+vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.smarttab = true
 vim.opt.breakindent = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.wrap = false
-vim.opt.backspace = { 'start', 'eol', 'indent' }
-vim.opt.path:append { '**' }
-vim.opt.wildignore:append { '.git', '*/node_modules/*' }
+vim.opt.backspace = { "start", "eol", "indent" }
+vim.opt.path:append { "**" }
+vim.opt.wildignore:append { ".git", "*/node_modules/*" }
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.undofile = true
-vim.g.mapleader = ' '
+vim.g.mapleader = " "
 
 -- turn off paste mode when leaving insert
-vim.api.nvim_create_autocmd('InsertLeave', {
-    pattern = '*',
-    command = 'set nopaste'
+vim.api.nvim_create_autocmd("InsertLeave", {
+  pattern = "*",
+  command = "set nopaste",
 })

@@ -1,5 +1,5 @@
-require('emorais.base')
-require('emorais.bootstrap')
-require('emorais.highlights')
-require('emorais.keybinds')
-require('emorais.plugins')
+require "emorais.base"
+require "emorais.bootstrap"
+require "emorais.highlights"
+require "emorais.keybinds"
+require "emorais.plugins"
