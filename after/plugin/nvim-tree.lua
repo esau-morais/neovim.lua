@@ -3,9 +3,6 @@ if not status then return end
 
 tree.setup {
   sort_by = "case_sensitive",
-  actions = {
-    open_file = { quit_on_open = true },
-  },
   update_focused_file = {
     enable = true,
     update_cwd = true,

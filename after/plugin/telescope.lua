@@ -2,8 +2,6 @@ local status, telescope = pcall(require, "telescope")
 if not status then return end
 local builtin = require "telescope.builtin"
 
-local function telescope_buffer_dir() return vim.fn.expand "%:p:h" end
-
 local fb_actions = require("telescope").extensions.file_browser.actions
 
 -- TODO: extract function to somewhere else
@@ -54,40 +52,14 @@ telescope.setup {
       },
     },
   },
-  extensions = {
-    file_browser = {
-      theme = "dropdown",
-      -- disables netrw and use telescope-file-browser in its place
-      hijack_netrw = true,
-    },
-  },
 }
-
-telescope.load_extension "file_browser"
 
 local keymap = vim.keymap.set
 
+keymap("n", "sf", function() builtin.find_files() end)
 keymap("n", "\\\\", function() builtin.buffers() end)
 keymap("n", ";;", function() builtin.resume() end)
 keymap("n", ";e", function() builtin.diagnostics() end)
-keymap(
-  "n",
-  "sf",
-  function()
-    telescope.extensions.file_browser.file_browser {
-      cwd = telescope_buffer_dir(),
-      respect_gitignore = true,
-      hidden = true,
-      grouped = true,
-      initial_mode = "normal",
-      layout_strategy = "vertical",
-      layout_config = {
-        height = 100,
-      },
-      borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    }
-  end
-)
 keymap("n", "<leader>g", function() builtin.current_buffer_fuzzy_find() end)
 keymap("v", "<leader>g", function()
   local text = getVisualSelection()

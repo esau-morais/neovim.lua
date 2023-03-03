@@ -3,7 +3,7 @@ if not status then return end
 
 lualine.setup {
   options = {
-    theme = "catppuccin",
+    theme = "auto",
     component_separators = "|",
     section_separators = { right = "" },
   },
@@ -11,13 +11,13 @@ lualine.setup {
     lualine_a = {
       { "mode", right_padding = 2 },
     },
-    lualine_b = { "filename", "branch" },
-    lualine_c = { "fileformat" },
-    lualine_x = {},
-    lualine_y = { "filetype", "progress" },
-    lualine_z = {
-      { "location", left_padding = 2 },
+    lualine_b = { "branch" },
+    lualine_c = {
+      { "filename", path = 3 },
     },
+    lualine_x = { "diagnostics" },
+    lualine_y = {},
+    lualine_z = { "filetype" },
   },
   inactive_sections = {
     lualine_a = { "filename" },

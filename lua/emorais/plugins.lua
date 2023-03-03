@@ -61,6 +61,8 @@ packer.startup(function(use)
   use "neovim/nvim-lspconfig"
   use "williamboman/mason.nvim"
   use "williamboman/mason-lspconfig.nvim"
+  use "jose-elias-alvarez/null-ls.nvim"
+  use "jose-elias-alvarez/typescript.nvim"
 
   -- auto completion
   use "rafamadriz/friendly-snippets"
@@ -72,6 +74,7 @@ packer.startup(function(use)
   use "L3MON4D3/LuaSnip"
   use "saadparwaiz1/cmp_luasnip"
 
+  use "axelvc/template-string.nvim"
   use "xiyaowong/nvim-transparent"
   use {
     "iamcco/markdown-preview.nvim",
@@ -79,5 +82,4 @@ packer.startup(function(use)
   }
   use "folke/zen-mode.nvim"
   use "pantharshit00/vim-prisma"
-  use "ThePrimeagen/vim-be-good"
 end)

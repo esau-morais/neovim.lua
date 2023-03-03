@@ -1,159 +1,64 @@
-local status, nvim_lsp = pcall(require, "lspconfig")
+local status, lspconfig = pcall(require, "lspconfig")
 if not status then return end
 
-local protocol = require "vim.lsp.protocol"
-
-local augroup_format = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
-
--- use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
 local on_attach = function(_, bufnr)
+  -- format on save
   vim.api.nvim_create_autocmd("BufWritePre", {
-    group = augroup_format,
     buffer = bufnr,
-    callback = function() vim.lsp.buf.format() end,
+    callback = function() vim.lsp.buf.format { timeout_ms = 4000 } end,
   })
 end
 
-protocol.CompletionItemKind = {
-  "", -- text
-  "", -- method
-  "", -- function
-  "", -- constructor
-  "", -- field
-  "", -- variable
-  "", -- class
-  "ﰮ", -- interface
-  "", -- module
-  "", -- property
-  "", -- unit
-  "", -- value
-  "", -- enum
-  "", -- keyword
-  "﬌", -- snippet
-  "", -- color
-  "", -- file
-  "", -- reference
-  "", -- folder
-  "", -- enummember
-  "", -- constant
-  "", -- struct
-  "", -- event
-  "ﬦ", -- operator
-  "", -- typeparameter
-}
-
--- set up completion using nvim_cmp with LSP source
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-capabilities.textDocument.colorProvider = {
-  dynamicRegistration = true,
-}
-
-nvim_lsp.flow.setup {
-  on_attach = on_attach,
+local lsp_config = {
   capabilities = capabilities,
+  group = vim.api.nvim_create_augroup("LspFormatting", { clear = true }),
+  on_attach = function(_, bufnr) on_attach(_, bufnr) end,
 }
 
-nvim_lsp.cssls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-nvim_lsp.tailwindcss.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "css", "typescript", "typescriptreact", "typescript.tsx" },
-}
-
-nvim_lsp.tsserver.setup {
-  on_attach = on_attach,
-  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-  cmd = { "typescript-language-server", "--stdio" },
-  capabilities = capabilities,
-}
-
-nvim_lsp.lua_ls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    Lua = {
-      diagnostics = {
-        -- get the language server to recognize the `vim` global
-        globals = { "vim" },
-      },
-
-      workspace = {
-        -- make the server aware of Neovim runtime files
-        library = vim.api.nvim_get_runtime_file("", true),
-        checkThirdParty = false,
-      },
-    },
-  },
-}
-
-nvim_lsp.prismals.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-nvim_lsp.jsonls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-nvim_lsp.ltex.setup {
-  on_attach = on_attach,
-  cmd = { "ltex-ls" },
-  filetypes = { "markdown", "text" },
-}
-
-nvim_lsp.eslint.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    codeActionOnSave = {
-      enable = true,
-      mode = "all",
-    },
-  },
-}
-
-nvim_lsp.dockerls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-nvim_lsp.yamlls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
-nvim_lsp.csharp_ls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-}
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  underline = true,
-  update_in_insert = false,
-  virtual_text = { spacing = 4, prefix = "■" },
-  severity_sort = true,
-})
-
--- diagnostic symbols in the sign column (gutter)
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = { vim.api.nvim_buf_get_name(0) },
+    title = "",
+  }
+  vim.lsp.buf.execute_command(params)
 end
 
-vim.diagnostic.config {
-  virtual_text = {
-    prefix = "■",
-  },
-  update_in_insert = true,
-  float = {
-    source = "always",
-  },
+require("mason-lspconfig").setup_handlers {
+  function(server_name) lspconfig[server_name].setup(lsp_config) end,
+  lua_ls = function()
+    lspconfig.lua_ls.setup(vim.tbl_extend("force", lsp_config, {
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" },
+          },
+        },
+      },
+    }))
+  end,
+  tsserver = function()
+    require("typescript").setup {
+      commands = {
+        OrganizeImports = {
+          organize_imports,
+          description = "Organize Imports",
+        },
+      },
+      server = vim.tbl_extend("force", lsp_config, {
+        on_attach = function(_, bufnr) on_attach(_, bufnr) end,
+        init_options = {
+          preferences = {
+            jsxAttributeCompletionStyle = "none",
+          },
+        },
+      }),
+    }
+  end,
 }
+
+vim.keymap.set("n", "<leader>o", "<cmd>TypescriptOrganizeImports<cr>")
+vim.keymap.set("n", "<leader>a", "<cmd>TypescriptAddMissingImports<cr>")
+vim.keymap.set("n", "<leader>r", "<cmd>TypescriptRemoveUnused<cr>")
